@@ -18,3 +18,4 @@ yarn-error.log
 .idea
 *.dev.*
 public/uploads
+docker/db/data
