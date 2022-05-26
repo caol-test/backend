@@ -2,25 +2,66 @@ version: '2'
 
 services:
 
-  ie-api:
-    container_name: ie-api
-    tty: true
-    image: bitnami/laravel:6.20.1
-    ports:
-      - 8001:3000
-    networks:
-      - ie-network
-    volumes:
-      - ./:/app
-    env_file:
-      - .env
-    environment:
-      - DB_HOST=${DB_HOST}
-      - DB_PORT=${DB_PORT}
-      - DB_DATABASE=${DB_DATABASE}
-      - DB_USERNAME=${DB_USERNAME}
-      - DB_PASSWORD=${DB_PASSWORD}
+    caol-api:
+        container_name: caol-api
+        tty: true
+        image: bitnami/laravel:6.20.1
+        ports:
+            - 8002:3000
+        networks:
+            - caol-network
+        volumes:
+            - ./:/app
+        env_file:
+            - .env
+        environment:
+            - DB_HOST=${DB_HOST}
+            - DB_PORT=${DB_PORT}
+            - DB_DATABASE=${DB_DATABASE}
+            - DB_USERNAME=${DB_USERNAME}
+            - DB_PASSWORD=${DB_PASSWORD}
+
+    caol-db:
+        image: mariadb:10.5.2
+        container_name: caol-db
+        restart: always
+        networks:
+            - caol-network
+        env_file:
+            - ./.env
+        volumes:
+            - ./docker/db/data:/var/lib/mysql
+            - ./docker/db/conf/mysqld.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf
+        environment:
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+            MYSQL_USER: ${DB_USERNAME}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+
+    caol-pma:
+        image: phpmyadmin/phpmyadmin
+        container_name: caol-pma
+        restart: always
+        env_file:
+            - .env
+        environment:
+            PMA_HOST: ${DB_HOST}
+            PMA_PORT: ${DB_PORT}
+            MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+        volumes:
+            - ./docker/pma/php.conf/php.ini:/usr/local/etc/php/php.ini
+        depends_on:
+            - caol-db
+        networks:
+            - caol-network
+
+    caol-redis:
+        image: redis:6.2.3-alpine
+        container_name: caol-redis
+        restart: always
+        networks:
+            - caol-network
 
 networks:
-  ie-network:
-    external: true
+    caol-network:
+        external: true
