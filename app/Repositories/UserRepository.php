@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Constants\UserConstants;
 use App\Models\Entities\CaoUsuario;
 use App\Repositories\_Core\Abstraction\AbstractRepository;
 use Illuminate\Support\Collection;
@@ -20,7 +21,7 @@ class UserRepository extends AbstractRepository
         return $this->model::join('permissao_sistema', 'cao_usuario.co_usuario', '=', 'permissao_sistema.co_usuario')
             ->where('permissao_sistema.co_sistema', 1)
             ->where('permissao_sistema.in_ativo', 1)
-            ->whereIn('permissao_sistema.co_tipo_usuario', [0, 1, 2])
+            ->whereIn('permissao_sistema.co_tipo_usuario', UserConstants::CONSULTANT_TYPES)
             ->select(['cao_usuario.co_usuario', 'cao_usuario.no_usuario'])
             ->get();
     }
