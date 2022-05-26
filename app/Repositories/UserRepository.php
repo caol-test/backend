@@ -21,6 +21,7 @@ class UserRepository extends AbstractRepository
             ->where('permissao_sistema.co_sistema', 1)
             ->where('permissao_sistema.in_ativo', 1)
             ->whereIn('permissao_sistema.co_tipo_usuario', [0, 1, 2])
+            ->select(['cao_usuario.co_usuario', 'cao_usuario.no_usuario'])
             ->get();
     }
 }
