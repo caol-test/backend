@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class CaoUsuario
- * 
+ *
  * @property string $co_usuario
  * @property string $no_usuario
  * @property string $ds_senha
@@ -43,7 +43,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $no_cidade
  * @property string|null $uf_cidade
  * @property Carbon|null $dt_expedicao
- * 
+ *
  * @property Collection|CaoConhecimento[] $cao_conhecimentos
  * @property Collection|CaoHistOcorrenciasO[] $cao_hist_ocorrencias_os
  * @property CaoPermissao $cao_permissao
@@ -62,7 +62,14 @@ class CaoUsuario extends Model
 
 	protected $casts = [
 		'nu_matricula' => 'int',
-		'icq' => 'int'
+		'icq' => 'int',
+        'dt_nascimento' => 'datetime:d-m-Y H:i:s',
+        'dt_admissao_empresa' => 'datetime:d-m-Y H:i:s',
+        'dt_desligamento' => 'datetime:d-m-Y H:i:s',
+        'dt_inclusao' => 'datetime:d-m-Y H:i:s',
+        'dt_expiracao' => 'datetime:d-m-Y H:i:s',
+        'dt_alteracao' => 'datetime:d-m-Y H:i:s',
+        'dt_expedicao' => 'datetime:d-m-Y H:i:s',
 	];
 
 	protected $dates = [
