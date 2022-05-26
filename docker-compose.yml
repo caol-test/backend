@@ -5,9 +5,7 @@ services:
     caol-api:
         container_name: caol-api
         tty: true
-        image: bitnami/laravel:6.20.1
-        ports:
-            - 8002:3000
+        image: bitnami/laravel:9.1.8
         networks:
             - caol-network
         volumes:
