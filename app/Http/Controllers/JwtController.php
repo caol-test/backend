@@ -19,8 +19,8 @@ class JwtController extends Controller
 
     public function renewJwt(): JsonResponse
     {
-        $data = $this->jwtService->renewToken();
-
-        return $this->success($data);
+        return $this->success([
+            'jwt' => $this->jwtService->getNewToken()
+        ]);
     }
 }

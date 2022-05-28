@@ -16,7 +16,7 @@ class JwtService
         $this->jwtRepository = $jwtRepository;
     }
 
-    public function renewToken(): ?string
+    public function getNewToken(): ?string
     {
         $payload = $this->buildJwtPayload();
         $jwt = JWTUtil::encodeJWT($payload);
