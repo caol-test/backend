@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\JwtController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -12,4 +13,8 @@ Route::prefix('users')->controller(UserController::class)->group(function () {
     Route::prefix('consultants')->group(function () {
         Route::get('/', 'getConsultants');
     });
+});
+
+Route::prefix('jwt')->controller(JwtController::class)->group(function () {
+    Route::get('/', 'renewJwt');
 });
