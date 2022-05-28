@@ -12,7 +12,7 @@ class JWTUtil
     public static function encodeJWT($payload): ?string
     {
         try {
-            return JWT::encode($payload, 'key', 'HS256');
+            return JWT::encode($payload, self::getKey(), 'HS256');
         } catch (Exception $exc) {
             return null;
         }
@@ -21,12 +21,16 @@ class JWTUtil
     public static function decodeJWT(string $jwt): ?stdClass
     {
         try {
-            $key = new Key('key', 'HS256');
+            $key = new Key(self::getKey(), 'HS256');
             $payload = JWT::decode($jwt, $key);
 
             return ($payload->exp > time()) ? $payload : null;
         } catch (Exception $exc) {
             return null;
         }
+    }
+
+    private static function getKey(): string {
+        return env('JWT_KEY', 'key');
     }
 }
