@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EarningController;
 use App\Http\Controllers\JwtController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\JwtAuth;
@@ -17,4 +18,10 @@ Route::prefix('users')
         Route::prefix('consultants')->group(function () {
             Route::get('/', 'getConsultants');
         });
+    });
+
+Route::prefix('earnings')
+    ->middleware([JwtAuth::class])
+    ->controller(EarningController::class)->group(function () {
+        Route::get('/', 'getEarnings');
     });
