@@ -39,6 +39,11 @@ abstract class AbstractRepository implements RepositoryInterface
         return $this->model::find($id);
     }
 
+    public function exists(array $criteria)
+    {
+        return $this->model::where($criteria)->exists();
+    }
+
     public function updateOrCreate(array $compareAttribs, array $fillAttribs)
     {
         return $this->model::updateOrCreate($compareAttribs, $fillAttribs);
