@@ -13,11 +13,12 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property string|null $year_month
  * @property string|null $month_year
- * @property string|null $user
+ * @property string|null $username
+ * @property string $fullname
  * @property float|null $net_earnings
  * @property float $fixed_cost
  * @property float|null $comission
- * @property float|null $lucro
+ * @property float|null $profit
  *
  * @package App\Models\Entities
  */
@@ -32,16 +33,17 @@ class VEarning extends Model
 		'net_earnings' => 'float',
 		'fixed_cost' => 'float',
 		'comission' => 'float',
-		'lucro' => 'float'
+		'profit' => 'float'
 	];
 
 	protected $fillable = [
 		'year_month',
 		'month_year',
-		'user',
+		'username',
+		'fullname',
 		'net_earnings',
 		'fixed_cost',
 		'comission',
-		'lucro'
+		'profit'
 	];
 }

@@ -19,7 +19,7 @@ class EarningRepository extends AbstractRepository
     {
         return $this->model::query()
             ->whereBetween('year_month', [$from, $to])
-            ->whereIn('user', $consultants)
+            ->whereIn('username', $consultants)
             ->get();
     }
 }
