@@ -4,9 +4,7 @@ namespace Tests\Feature;
 
 use App\Repositories\JwtRepository;
 use App\Services\UserService;
-use App\Utils\JWTUtil;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 use Mockery\MockInterface;
 use Tests\TestCase;
 
@@ -29,20 +27,12 @@ class JwtMiddlewareTest extends TestCase
             $mock->shouldReceive('exists')->once()->andReturn(true);
         });
 
-        $jwt = $this->getJWt();
+        $jwt = $this->getJwt();
 
         $response = $this->get('/api/users/consultants', [
             'Authorization' => "Bearer $jwt"
         ]);
 
         $response->assertJsonPath('success', true);
-    }
-
-    private function getJWt(): ?string
-    {
-        return JWTUtil::encodeJWT([
-            'dummy' => Str::random(),
-            'exp' => time() + 3600,
-        ]);
     }
 }
