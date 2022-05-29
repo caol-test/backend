@@ -2,19 +2,19 @@
 
 use App\Http\Controllers\JwtController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
+use App\Http\Middleware\JwtAuth;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-Route::prefix('users')->controller(UserController::class)->group(function () {
-    Route::prefix('consultants')->group(function () {
-        Route::get('/', 'getConsultants');
+Route::prefix('jwt')
+    ->controller(JwtController::class)
+    ->group(function () {
+        Route::get('/', 'renewJwt');
     });
-});
 
-Route::prefix('jwt')->controller(JwtController::class)->group(function () {
-    Route::get('/', 'renewJwt');
-});
+Route::prefix('users')
+    ->middleware([JwtAuth::class])
+    ->controller(UserController::class)->group(function () {
+        Route::prefix('consultants')->group(function () {
+            Route::get('/', 'getConsultants');
+        });
+    });
