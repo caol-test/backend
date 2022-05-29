@@ -7,9 +7,11 @@ use PHPUnit\Framework\TestCase;
 
 class JwtUtilTest extends TestCase
 {
+    private const DUMMY_STRING = 'dummy_string';
+
     public function test_expired_jwt_decodes_to_null()
     {
-        $jwt = JWTUtil::encodeJWT(['dummy' => 'dummy_string', 'exp' => time() - 60]);
+        $jwt = JWTUtil::encodeJWT(['exp' => time() - 60]);
         $decoded = JWTUtil::decodeJWT($jwt);
 
         self::assertNull($decoded);
@@ -17,9 +19,9 @@ class JwtUtilTest extends TestCase
 
     public function test_valid_jwt_gets_correctly_decoded()
     {
-        $jwt = JWTUtil::encodeJWT(['dummy' => 'dummy_string', 'exp' => time() + 60]);
+        $jwt = JWTUtil::encodeJWT(['dummy' => self::DUMMY_STRING, 'exp' => time() + 60]);
         $decoded = JWTUtil::decodeJWT($jwt);
 
-        self::assertEquals('dummy_string', $decoded->dummy);
+        self::assertEquals(self::DUMMY_STRING, $decoded->dummy);
     }
 }
