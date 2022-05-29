@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\ResponseHandler;
 use App\Services\JwtService;
 use Illuminate\Http\JsonResponse;
 
 class JwtController extends Controller
 {
-    use ResponseHandler;
-
     private JwtService $jwtService;
 
     public function __construct(JwtService $jwtService)
