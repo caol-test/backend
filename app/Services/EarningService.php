@@ -15,7 +15,7 @@ class EarningService
         $this->earningRepository = $earningRepository;
     }
 
-
+    #[ArrayShape(['series' => "\Illuminate\Support\Collection", 'labels' => "\Illuminate\Support\Collection"])]
     public function getPercentsByConsultant(array $consultants, string $from, string $to): array
     {
         $earnings = $this->earningRepository->getByDateRange($consultants, $from, $to);
@@ -52,22 +52,11 @@ class EarningService
             return $carry + $item;
         }, 0);
 
-        $salariesAvg = $salariesSum / $users->count() * -1;
+        $salariesAvg = $salariesSum / ($users->count() === 0 ? 1 : $users->count()) * -1;
 
         $monthNames = $earnings->groupBy('month_year')->keys();
 
-        $series = $earnings->groupBy(['full_name', 'month_year'])
-            ->map(function ($monthsRows, $user) use ($monthNames) {
-                $userMonths = $monthNames->map(function ($monthName) use ($monthsRows) {
-                    return $monthsRows[$monthName][0]->net_earnings ?? 0;
-                });
-
-                return [
-                    'name' => $user,
-                    'type' => 'column',
-                    'data' => $userMonths,
-                ];
-            })->values()->toArray();
+        $series = $this->groupEarningsByUserAndMonth($earnings, $monthNames);
 
         $avgCostsArray = $monthNames->map(function () use ($salariesAvg) {
             return $salariesAvg;
@@ -83,6 +72,21 @@ class EarningService
             'series' => $series,
             'x_axis' => $monthNames,
         ];
+    }
+
+    private function groupEarningsByUserAndMonth(Collection $earnings, Collection $monthNames): array {
+        return $earnings->groupBy(['full_name', 'month_year'])
+            ->map(function ($monthsRows, $user) use ($monthNames) {
+                $userMonths = $monthNames->map(function ($monthName) use ($monthsRows) {
+                    return $monthsRows[$monthName][0]->net_earnings ?? 0;
+                });
+
+                return [
+                    'name' => $user,
+                    'type' => 'column',
+                    'data' => $userMonths,
+                ];
+            })->values()->toArray();
     }
 
     public function getEarnings(array $consultants, string $from, string $to): Collection
