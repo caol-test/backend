@@ -36,4 +36,15 @@ class EarningController extends Controller
 
         return $this->success($data);
     }
+
+    public function getPercentsByConsultant(Request $request): JsonResponse
+    {
+        $consultants = $request->get('consultants');
+        $from = $request->get('from');
+        $to = $request->get('to');
+
+        $data = $this->earningService->getPercentsByConsultant($consultants, $from, $to);
+
+        return $this->success($data);
+    }
 }
