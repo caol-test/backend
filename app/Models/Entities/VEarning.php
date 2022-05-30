@@ -14,10 +14,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $year_month
  * @property string|null $month_year
  * @property string|null $username
- * @property string $fullname
+ * @property string $full_name
  * @property float|null $net_earnings
  * @property float $fixed_cost
- * @property float|null $comission
+ * @property float|null $commission
  * @property float|null $profit
  *
  * @package App\Models\Entities
@@ -32,7 +32,7 @@ class VEarning extends Model
 	protected $casts = [
 		'net_earnings' => 'float',
 		'fixed_cost' => 'float',
-		'comission' => 'float',
+		'commission' => 'float',
 		'profit' => 'float'
 	];
 
@@ -40,10 +40,10 @@ class VEarning extends Model
 		'year_month',
 		'month_year',
 		'username',
-		'fullname',
+		'full_name',
 		'net_earnings',
 		'fixed_cost',
-		'comission',
+		'commission',
 		'profit'
 	];
 }
