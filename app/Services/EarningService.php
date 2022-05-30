@@ -15,6 +15,29 @@ class EarningService
         $this->earningRepository = $earningRepository;
     }
 
+
+    public function getPercentsByConsultant(array $consultants, string $from, string $to): array
+    {
+        $earnings = $this->earningRepository->getByDateRange($consultants, $from, $to);
+        $earningsSum = $earnings->reduce(function ($carry, $item) {
+            return $carry + $item->net_earnings;
+        }, 0);
+
+        $earningsPercentsByUser = $earnings->groupBy(['full_name'])
+            ->map(function ($items) use ($earningsSum) {
+                $userEarnings = $items->reduce(function ($carry, $item) {
+                    return $carry + $item->net_earnings;
+                }, 0);
+
+                return round($userEarnings * 100 / $earningsSum, 2);
+            });
+
+        return [
+            'series' => $earningsPercentsByUser->values(),
+            'labels' => $earningsPercentsByUser->keys(),
+        ];
+    }
+
     #[ArrayShape(['series' => "mixed[]", 'x_axis' => "\Illuminate\Support\Collection"])]
     public function getFixedCostAverage(array $consultants, string $from, string $to): array
     {
