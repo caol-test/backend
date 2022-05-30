@@ -40,12 +40,6 @@ services:
       MYSQL_USER: ${DB_USERNAME}
       MYSQL_PASSWORD: ${DB_PASSWORD}
 
-  caol-redis:
-    image: redis:6.2.3-alpine
-    container_name: caol-redis
-    restart: always
-    networks:
-      - caol-network
 networks:
   caol-network:
     external: true
