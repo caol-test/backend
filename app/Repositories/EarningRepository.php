@@ -18,6 +18,7 @@ class EarningRepository extends AbstractRepository
     public function getByDateRange(array $consultants, string $from, string $to): Collection
     {
         return $this->model::query()
+            ->select(['month_year', 'full_name', 'net_earnings', 'fixed_cost', 'commission', 'profit'])
             ->whereBetween('year_month', [$from, $to])
             ->whereIn('username', $consultants)
             ->get();
