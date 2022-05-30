@@ -21,7 +21,7 @@ Route::prefix('users')
     });
 
 Route::prefix('earnings')
-    //->middleware([JwtAuth::class])
+    ->middleware([JwtAuth::class])
     ->controller(EarningController::class)->group(function () {
         Route::get('/', 'getEarnings');
         Route::get('/fixed-cost-avg', 'getFixedCostAverage');
