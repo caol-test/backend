@@ -25,4 +25,15 @@ class EarningController extends Controller
             'earnings' => $this->earningService->getEarnings($consultants, $from, $to),
         ]);
     }
+
+    public function getFixedCostAverage(Request $request): JsonResponse
+    {
+        $consultants = $request->get('consultants');
+        $from = $request->get('from');
+        $to = $request->get('to');
+
+        $data = $this->earningService->getFixedCostAverage($consultants, $from, $to);
+
+        return $this->success($data);
+    }
 }
