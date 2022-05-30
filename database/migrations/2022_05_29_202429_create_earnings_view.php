@@ -19,20 +19,20 @@ return new class extends Migration
           `year_month`,
           `month_year`,
           `username`,
-          `fullname`,
+          `full_name`,
           `net_earnings`,
           `fixed_cost`,
-          `comission`,
-          round(`net_earnings` + `fixed_cost` + `comission`, 2) `profit`
+          `commission`,
+          round(`net_earnings` + `fixed_cost` + `commission`, 2) `profit`
           from (
             select
               date_format(cao_fatura.data_emissao, '%Y-%m') `year_month`,
               date_format(cao_fatura.data_emissao, '%b %Y') `month_year`,
               cao_os.co_usuario `username`,
-              cao_usuario.no_usuario `fullname`,
+              cao_usuario.no_usuario `full_name`,
               round(sum(cao_fatura.valor - (cao_fatura.valor * cao_fatura.total_imp_inc / 100)), 2) `net_earnings`,
               cao_salario.brut_salario * -1 fixed_cost,
-              round(sum((cao_fatura.valor - (cao_fatura.valor * cao_fatura.total_imp_inc / 100)) * cao_fatura.comissao_cn / 100), 2) * -1 comission
+              round(sum((cao_fatura.valor - (cao_fatura.valor * cao_fatura.total_imp_inc / 100)) * cao_fatura.comissao_cn / 100), 2) * -1 commission
               from cao_fatura
                 join cao_cliente on (cao_fatura.co_cliente = cao_cliente.co_cliente)
                 join cao_sistema on (cao_fatura.co_sistema = cao_sistema.co_sistema)
