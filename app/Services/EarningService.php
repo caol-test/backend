@@ -16,6 +16,29 @@ class EarningService
 
     public function getEarnings(array $consultants, string $from, string $to): Collection
     {
-        return $this->earningRepository->getByDateRange($consultants, $from, $to);
+        $earnings = $this->earningRepository->getByDateRange($consultants, $from, $to);
+        $earningsByUser = $earnings->groupBy('full_name');
+
+        return $earningsByUser->map(function ($userRows, $userFullName) {
+            $userRows[] = $this->sumTotalsForUser($userFullName, $userRows);
+
+            return $userRows;
+        })->flatMap(function ($item) {
+            return $item;
+        });
+    }
+
+    private function sumTotalsForUser(string $userFullName, Collection $items): array
+    {
+        return $items->reduce(function ($carry, $item) use ($userFullName) {
+            return [
+                'month_year' => 'BALANCE',
+                'full_name' => $userFullName,
+                'net_earnings' => ($carry['net_earnings'] ?? 0) + $item['net_earnings'],
+                'fixed_cost' => ($carry['fixed_cost'] ?? 0) + $item['fixed_cost'],
+                'commission' => ($carry['commission'] ?? 0) + $item['commission'],
+                'profit' => ($carry['profit'] ?? 0) + $item['profit'],
+            ];
+        }, []);
     }
 }
